@@ -1,0 +1,125 @@
+第7章 内部排序
+课后习题：7.2  7.3  7.5  7.10  7.16
+7.2：
+int stack_sort(stack<int> s,int n){
+	stack<int> s1;
+	int temp;
+	s1.push(s.top());
+	s.pop();
+	while (!s.empty()){
+		temp=s.top();
+		s.pop();
+		int a;
+		a=s1.top();
+		if (a<temp) {s.push(a);s1.pop();}
+		else s1.push(temp);
+		}
+	return s1.top();
+	}
+7.3
+能执行，不会，会让运行时间变长，因为它将已经排好序的值重复比较，增加了运行时间，但没有改变渐进复杂性。
+7.5
+a)
+template <class E, class Comp> 
+void selsort(E A[], int n) { 
+for (int i=0; i<n-1; i++) {
+int lowindex = i;
+ for (int j=n-1; j>i; j--) 
+if (Comp::lt(A[j], A[lowindex])) lowindex = j; 
+if (i != lowindex)
+swap(A, i, lowindex); } }
+
+b)不能，减少了移动的时间，但增加了检查的时间。
+7.10
+a) Θ(n^2logn)
+b) Θ(n^2logn)
+
+7.16:
+a) 
+template<typename E>
+void TriSort(E A[3]) {
+if (A[1] < A[0]) 
+if (A[2] < A[0]) 
+if (A[2] < A[1])
+swap(A[0], A[2]);
+else {
+swap(A[0], A[1]); 
+swap(A[1], A[2]); } 
+else
+swap(A[0], A[1]); 
+else if (A[2] < A[1]) 
+if (A[2] < A[1]) {
+swap(A[0], A[2]);
+ swap(A[1], A[2]); }
+else
+swap(A[1], A[2]);
+else }
+最佳：比较2次
+平均：比较8/3次
+最坏：比较3次
+
+b)，c)
+template<typename E>
+void swap(E A[],int I,int j)
+{E temp=A[i];
+A[j]=A[i];
+A[j]=temp;
+}
+template <class Elem, class Comp>
+void inssort(Elem A[], int n) {
+  for (int i=1; i<n; i++)
+    for (int j=i; (j>0) &&
+              (Comp::lt(A[j], A[j-1])); j--)
+      swap(A, j, j-1);
+}
+
+b)最佳：0 交换, 4比较。
+最坏：12.5交换比较
+平均：25/4交换比较
+c）最佳：0交换 7比较
+最坏：32 交换比较
+最差：16 交换比较
+
+补充作业题
+一、单项选择题
+1．堆排序的时间复杂度是（D）。
+A）O(1)			B）O(n)			C）O(n2)			D）O(nlogn)
+2．在下述排序算法中，所需辅助存储量最多的是（B）。
+A）快速排序		B）归并排序		C）堆排序		D）链式基数排序
+3．每一趟都能选出一个元素放在其最终位置上，并且不稳定的排序算法是（B）。
+A）冒泡排序		B）简单选择排序C）希尔排序		D）直接插入排序
+4．在文件“局部有序”或文件长度较小的情况下，最佳内部排序的方法是（A）。
+A）直接插入排序	B）起泡排序  	C）简单选择排序D）基数排序
+5．快速排序执行一遍之后，已经到位的元素个数是（A）。
+A）1			B）3			C） 			D） 
+6．数据表中有10000个元素，如果仅需求出其中最大的10个元素，则采用（C）排序算法最节省时间。
+A）快速排序		B）希尔排序		C）堆排序		D）直接选择排序
+二、综合题
+1．判别序列（12，70，33，65，24，56，48，92，86，33）是否为堆，如果不是，则将它调整为堆。
+不是，
+（12，24，33，65，33，56，48，92，86，70）
+2．给出一组关键字T=(12,2,16,30,8,28,4,10,20,6,18)。写出用下列算法从小到大排序时第一趟结束时的序列。
+（1）希尔排序（第一趟排序的增量为6）
+（12，2，10，20，6，28，4，16，30，8，18）
+（2）快速排序（选第一个记录为枢轴）
+ （4，2，6，10，8，12，28，30，20，16，18）
+3．利用比较的方法进行排序，在最坏情况下，能达到的最好的时间复杂度是什么？
+O（nlogn）
+4．有一种简单的排序算法，叫做计数排序（Count Sorting）。这种排序算法对一个待排序的表（用数组表示）进行排序，并将排序结果存放到另一个新的表中。必须注意的是，表中所有待排序的关键码互不相同。计数排序算法针对表中的每个记录，扫描待排序的表一趟，统计表中有多少个记录的关键码比该记录的关键码小。假设针对某一个记录，统计出的计数值为C，那么，这个记录在新的有序表中的合适的存放位置即为C。
+（1）给出适用于计数排序的数据结构定义。
+template<typename T>
+T old_list[100]
+（2）编写实现计数排序的算法。
+template<typename T>
+void counting_sort(T old_list[],int n){
+T new_list[];
+int count=0;
+int i=0;
+T temp;
+while (i<n){
+for (int j=0;j<n;j++){
+	if (old_list[j]<old_list[i]) ++count;
+};
+new_list[count]=old_list[i];
+++i;};
+};
